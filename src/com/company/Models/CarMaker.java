@@ -85,5 +85,8 @@ public class CarMaker extends Model{
     public List<CarModel> models() throws Exception{
         return this.hasMany(CarModel.class, "Maker");
     }
+    public List<CarModel> models(List<CarModel> dataList) throws Exception{
+        return this.hasMany(CarModel.class, "Maker", dataList);
+    }
 
 }

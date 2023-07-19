@@ -79,5 +79,9 @@ public class CarModel extends Model{
         return this.belongsTo(CarMaker.class, "Maker");
     }
 
+    public CarMaker carMaker(List<CarMaker> dataList) throws Exception {
+        return this.belongsTo(CarMaker.class, "Maker", dataList);
+    }
+
 
 }

@@ -114,31 +114,66 @@ public class Tasks {
         return makers;
     }
 
-    public static void task5() throws Exception{
-
-        // maker
-        List<CarMaker> makers = CarMaker.All();
-        List<CarModel> models ;
-
+    public static void task5() throws Exception {
+        Map<String, Double> modelHpMap = new HashMap(36);
+        Map<String, Double> makerHpMap = new HashMap(36);
         List<CarName> allNames = CarName.All();
         List<CarData> allData = CarData.All();
         List<CarModel> allModels = CarModel.All();
+        List<CarMaker> allMakers = CarMaker.All();
+        System.out.println("the avg hp by model :");
+        Iterator it = allModels.iterator();
 
+        List carNames;
+        double hp;
+        int sizeNames;
+        Iterator it2;
+        while(it.hasNext()) {
+            CarModel allModel = (CarModel)it.next();
+            carNames = CarName.Where("Model", "==", allModel.get("Model"), allNames);
+            sizeNames = carNames.size();
+            hp = 0.0;
 
-        System.out.println("the avg hp by makers :");
-
-        for (CarMaker maker : makers) {
-
-            models = CarModel.Where("Maker", maker.getID(), allModels);
-
-            for (CarModel model : models) {
-
-
-
+            CarName carName;
+            for(it2 = carNames.iterator(); it2.hasNext(); hp += (double)Integer.parseInt(CarData.find(carName.getID(), allData).get("Horsepower"))) {
+                carName = (CarName)it2.next();
             }
 
+            hp /= (double)sizeNames;
+            if (hp > 0.0) {
+                modelHpMap.put(allModel.get("Model"), hp);
+            }
         }
 
+        System.out.println(modelHpMap);
+        System.out.println("the avg hp by maker :");
+        it = allMakers.iterator();
+
+        while(it.hasNext()) {
+            CarMaker allMaker = (CarMaker)it.next();
+            List<CarModel> models = allMaker.models(allModels);
+            sizeNames = 0;
+            hp = 0.0;
+            it2 = models.iterator();
+
+            while(it2.hasNext()) {
+                CarModel allModel = (CarModel)it2.next();
+                carNames = CarName.Where("Model", "==", allModel.get("Model"), allNames);
+                sizeNames += carNames.size();
+
+                CarName carName;
+                for(Iterator var21 = carNames.iterator(); var21.hasNext(); hp += (double)Integer.parseInt(CarData.find(carName.getID(), allData).get("Horsepower"))) {
+                    carName = (CarName)var21.next();
+                }
+            }
+
+            hp /= (double)sizeNames;
+            if (hp > 0.0) {
+                makerHpMap.put(allMaker.get("FullName"), hp);
+            }
+        }
+
+        System.out.println(makerHpMap);
     }
 
 
