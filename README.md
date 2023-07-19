@@ -13,4 +13,4 @@
   - task05: return the average horse-power per model and per maker 
 
 
-    the infeces of this project is the Model class, and the use of the Reflection api in it
+    The emphasis of this project is the Model class, and the use of the Reflection api in it
